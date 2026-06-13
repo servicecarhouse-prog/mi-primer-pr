@@ -21,6 +21,6 @@ crear ramas, hacer commits y abrir Pull Requests.
 - Cuenta de GitHub
 - GitHub CLI (`gh`)
 
-## Autro
+## Autor
 
 servicecarhouse-prog
