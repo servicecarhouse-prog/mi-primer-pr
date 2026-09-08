@@ -53,6 +53,23 @@ python bot.py paper --symbol BTCUSDT --interval 1m --iterations 60 --sleep 5
 | `--iterations` | (paper) número de iteraciones del bucle | `30` |
 | `--sleep` | (paper) segundos entre cada comprobación de precio | `5.0` |
 
+## Modo automático (sin tener tu computadora encendida)
+
+`signal_bot.py` es una versión de un solo disparo pensada para correr sola
+por GitHub Actions (`.github/workflows/trading-signal-bot.yml`), cada 15
+minutos, sin que dependas de tu equipo ni de esta conversación. Cada
+ejecución:
+
+1. Consulta el precio actual y calcula si hay señal de COMPRA/VENTA.
+2. Guarda el resultado en `signals.log` (histórico de señales).
+3. Guarda el estado de la posición simulada en `state.json`.
+4. Hace commit y push de ambos archivos al repo automáticamente.
+
+Para verlo funcionando: pestaña **Actions** del repo en GitHub → workflow
+"Trading signal bot (simulado)". También puedes dispararlo manualmente
+desde ahí con el botón "Run workflow". Sigue siendo 100% simulado — no
+ejecuta ninguna orden real, solo dice qué haría el bot.
+
 ## Siguientes pasos (si algún día se quiere operar con dinero real)
 
 1. Verificar que la plataforma/broker esté regulada por el organismo

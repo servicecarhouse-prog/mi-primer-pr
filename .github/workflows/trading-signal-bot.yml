@@ -1,0 +1,40 @@
+name: Trading signal bot (simulado)
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trading-signal-bot
+  cancel-in-progress: false
+
+jobs:
+  check-signal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/happy-investment-platform-qo6g1k
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r trading_bot/requirements.txt
+
+      - name: Run signal check
+        working-directory: trading_bot
+        run: python signal_bot.py --symbol BTCUSDT --interval 15m
+
+      - name: Commit updated state/log
+        run: |
+          git config user.name "trading-signal-bot"
+          git config user.email "actions@github.com"
+          git add trading_bot/state.json trading_bot/signals.log
+          git diff --cached --quiet || git commit -m "Signal bot: update state [skip ci]"
+          git push
